@@ -1,0 +1,4 @@
+total 8
+-rw-r--r--. 1 jgabricevic jgabricevic  0 Lis  1 10:49 output_3.txt
+-rw-r--r--. 1 jgabricevic jgabricevic 39 Lis  1 10:44 zadatak_2.txt
+-rwxr-xr-x. 1 jgabricevic jgabricevic 41 Lis  1 10:48 zadatak_3.sh
