@@ -48,7 +48,8 @@ void ElementaryParticle::bosonDecay(ElementaryParticle * c1, ElementaryParticle 
 			  c1->bozon = true;
 			  c2->ime = "W";
 			  c2->masa = 80.39;
-			  c2->bozon = true;	
+			  c2->bozon = true;
+			  
 			}
 		if(r<6.4 && r>2.6)
 			{ c1->ime = "tau";
@@ -74,6 +75,18 @@ void ElementaryParticle::bosonDecay(ElementaryParticle * c1, ElementaryParticle 
 			  c2->masa = 4.180;
 			  c2->bozon = false;	
 			}
+		//p=sqrt(px*px+py*py+pz*pz);
+	        r = rand() % int(0.7*px)+0.3*px;
+		c1->px = r;
+		c2->px = px-r;
+		
+		r = rand() % int(0.7*py)+0.3*py;
+		c1->py = r;
+		c2->py = py-r;
+
+		r = rand() % int(0.7*pz)+0.3*pz;
+		c1->pz = r;
+		c2->pz = pz-r;
 		
 		}
 	}

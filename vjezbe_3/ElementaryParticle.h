@@ -14,7 +14,7 @@ class ElementaryParticle{
 
 	ElementaryParticle(string name,double mass,bool boson);
 
-	double px,py,pz,E,Trans_Mom;
+	double px,py,pz,E,Trans_Mom,p;
 
 	void Unos(double a, double b, double c);
 	void TransMoment();
