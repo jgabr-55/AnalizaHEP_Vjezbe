@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -16,4 +18,8 @@ class ElementaryParticle{
 
 	void Unos(double a, double b, double c);
 	void TransMoment();
+
+	ElementaryParticle();
+	
+	void bosonDecay(ElementaryParticle *a, ElementaryParticle *b);
 };
