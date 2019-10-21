@@ -13,7 +13,7 @@ ElementaryParticle::ElementaryParticle(string name,double mass,bool boson)
 		bozon = boson;		
 	}
 
-void ElementaryParticle::Unos(double a, double b, double c)
+void ElementaryParticle::CetveroVektor(double a, double b, double c)
 	{
 		px=a;
 		py=b;
@@ -21,10 +21,11 @@ void ElementaryParticle::Unos(double a, double b, double c)
 		E=sqrt(px*px+py*py+pz*pz+masa*masa);
 	}
 
-void ElementaryParticle::TransMoment()
+double ElementaryParticle::TransMoment()
 	{
 		Trans_Mom = sqrt (px*px+py*py);
-		cout<<"Transverzalni moment je: "<<Trans_Mom<<endl;
+		//cout<<"Transverzalni moment je: "<<Trans_Mom<<endl;
+		return Trans_Mom;
 	}
 
 ElementaryParticle::ElementaryParticle()
@@ -76,17 +77,28 @@ void ElementaryParticle::bosonDecay(ElementaryParticle * c1, ElementaryParticle 
 			  c2->bozon = false;	
 			}
 		//p=sqrt(px*px+py*py+pz*pz);
-	        r = rand() % int(0.7*px)+0.3*px;
-		c1->px = r;
-		c2->px = px-r;
-		
-		r = rand() % int(0.7*py)+0.3*py;
-		c1->py = r;
-		c2->py = py-r;
+	        int random_x = rand() % 100 + 1;
+		int random_y, random_z;
 
-		r = rand() % int(0.7*pz)+0.3*pz;
-		c1->pz = r;
-		c2->pz = pz-r;
+  		if(random_x == 100) 
+  		{
+   			random_y = 0;
+    			random_z = 0;
+  		}
+  		else
+  		{
+    			random_y = rand() % (100 - random_x) + 1;
+    			random_z = 100 - random_x - random_y;
+  		}
+
+  
+  		c1->px = px*(random_x/100.);
+		c1->py = py*(random_y/100.);
+		c1->pz = pz*(random_z/100.);
+  		c2->px = px - c1->px;
+		c2->py = py - c1->py;
+		c2->pz = pz - c1->pz;
+
 		
 		}
 	}
