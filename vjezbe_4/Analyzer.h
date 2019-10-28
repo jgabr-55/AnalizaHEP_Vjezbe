@@ -27,6 +27,9 @@ public:
 
 
 	void ReadFile();
+	void ConvertTxtToRootFile();
+
+	
 
 
 

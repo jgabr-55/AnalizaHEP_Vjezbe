@@ -5,8 +5,8 @@ using namespace std;
 int main(){
 
 	Analyzer *a = new Analyzer();
-	a->ReadFile();
-	cout<<a->_EventNumber<<endl;
+	a->ConvertTxtToRootFile();
+	//cout<<a->_EventNumber<<endl;
 	
 
 }
