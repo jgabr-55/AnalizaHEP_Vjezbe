@@ -13,12 +13,22 @@ ElementaryParticle::ElementaryParticle(string name,double mass,bool boson)
 		bozon = boson;		
 	}
 
+double ElementaryParticle::CetveroVektor_dec(double a, double b, double c, double m)
+	{
+		px=a;
+		py=b;
+		pz=c;
+		masa=m;
+		return sqrt(px*px+py*py+pz*pz+masa*masa);		
+	}
+
 void ElementaryParticle::CetveroVektor(double a, double b, double c)
 	{
 		px=a;
 		py=b;
 		pz=c;
-		E=sqrt(px*px+py*py+pz*pz+masa*masa);
+		
+		E =sqrt(px*px+py*py+pz*pz+masa*masa);		
 	}
 
 double ElementaryParticle::TransMoment()
@@ -98,6 +108,9 @@ void ElementaryParticle::bosonDecay(ElementaryParticle * c1, ElementaryParticle 
   		c2->px = px - c1->px;
 		c2->py = py - c1->py;
 		c2->pz = pz - c1->pz;
+
+		c1->E = CetveroVektor_dec(c1->px, c1->py, c1->pz, c1->masa);
+		c2->E = CetveroVektor_dec(c2->px, c2->py, c2->pz, c2->masa);
 
 		
 		}

@@ -17,6 +17,7 @@ class ElementaryParticle{
 	double px,py,pz,E,Trans_Mom,p;
 
 	void CetveroVektor(double a, double b, double c);
+	double CetveroVektor_dec(double a, double b, double c, double m);
 	double TransMoment();
 
 	ElementaryParticle();
