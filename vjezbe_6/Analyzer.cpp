@@ -3,6 +3,7 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <TLegend.h>
 
 void Analyzer::Loop()
 {
@@ -12,13 +13,28 @@ void Analyzer::Loop()
 	TCanvas *c1 = new TCanvas("c1","c1",900,900);
 	
 
-	TH1F *h1 = new TH1F("trans_mom_leptona","",100,0,100); //brojevi se odnose na binove i sl.
-	TH1F *h2 = new TH1F("pseudorapiditet","",100,-3,3);
-	TH1F *h3 = new TH1F("azimutalni_kut","",100,-5,5);
-	TH1F *h4 = new TH1F("BDT_rezultat","",100,-10,10);
+	TH1F *h1_trans_mom = new TH1F("trans_mom_leptona","",100,0,100); //brojevi se odnose na binove , pa granice.
+	TH1F *h2_trans_mom = new TH1F("","",100,0,100);
+	TH1F *h3_trans_mom = new TH1F("","",100,0,100);
+	TH1F *h4_trans_mom = new TH1F("","",100,0,100);
 
-	TH1F *h5 = new TH1F("Higgs","",25,90,140);
+	TH1F *h1_pseudorap = new TH1F("pseudorapiditet","",100,-3,3); //brojevi se odnose na binove i sl.
+	TH1F *h2_pseudorap = new TH1F("","",100,-3,3);
+	TH1F *h3_pseudorap = new TH1F("","",100,-3,3);
+	TH1F *h4_pseudorap = new TH1F("","",100,-3,3);
 
+	TH1F *h1_azim_kut = new TH1F("azimutalni_kut","",100,-5,5); //brojevi se odnose na binove i sl.
+	TH1F *h2_azim_kut = new TH1F("","",100,-5,5);
+	TH1F *h3_azim_kut = new TH1F("","",100,-5,5);
+	TH1F *h4_azim_kut = new TH1F("","",100,-5,5);
+
+	TH1F *h1_bdt = new TH1F("BDT_rezultat","",100,-10,10); //brojevi se odnose na binove i sl.
+	TH1F *h2_bdt = new TH1F("","",100,-10,10);
+	TH1F *h3_bdt = new TH1F("","",100,-10,10);
+	TH1F *h4_bdt = new TH1F("","",100,-10,10);
+
+	TH1F *h5_higgs = new TH1F("Higgs","",25,90,140);
+	
 	
 	
 
@@ -58,10 +74,27 @@ void Analyzer::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
-	h1->Fill(LepPt->at(0)); //histogram ("ono cime ga punimo na x os")
-	h2->Fill(LepEta->at(0));
-	h3->Fill(LepPhi->at(0));
-	h4->Fill(LepBDT->at(0));
+	double omega = (137*1000*xsec*overallEventWeight)/(weight_histo->GetBinContent(40));
+
+	h1_trans_mom->Fill(LepPt->at(0),omega); //histogram ("ono cime ga punimo na x os")
+	h2_trans_mom->Fill(LepPt->at(1),omega);
+	h3_trans_mom->Fill(LepPt->at(2),omega);
+	h4_trans_mom->Fill(LepPt->at(3),omega);
+
+	h1_pseudorap->Fill(LepEta->at(0),omega);
+	h2_pseudorap->Fill(LepEta->at(1),omega);
+	h3_pseudorap->Fill(LepEta->at(2),omega);
+	h4_pseudorap->Fill(LepEta->at(3),omega);
+
+	h1_azim_kut->Fill(LepPhi->at(0),omega);
+	h2_azim_kut->Fill(LepPhi->at(1),omega);
+	h3_azim_kut->Fill(LepPhi->at(2),omega);
+	h4_azim_kut->Fill(LepPhi->at(3),omega);
+
+	h1_bdt->Fill(LepBDT->at(0),omega);
+	h2_bdt->Fill(LepBDT->at(1),omega);
+	h3_bdt->Fill(LepBDT->at(2),omega);
+	h4_bdt->Fill(LepBDT->at(3),omega);
 
 	l1.SetPtEtaPhiM(LepPt->at(0), LepEta->at(0), LepPhi->at(0), 0);
 	l2.SetPtEtaPhiM(LepPt->at(1), LepEta->at(1), LepPhi->at(1), 0);
@@ -73,23 +106,110 @@ void Analyzer::Loop()
 
 	h=z1+z2;
 
-	double omega = (137*1000*xsec*overallEventWeight)/(weight_histo->GetBinContent(40));
+	
 
-	h5->Fill(h.M(),omega);
+	h5_higgs->Fill(h.M(),omega);
    }
 
 	
 	c->cd(1);
-	h1->Draw();
+	h1_trans_mom->GetXaxis()->SetTitle("Transverzalni moment");
+	h1_trans_mom->GetYaxis()->SetTitle("Broj pojavljivanja");
+	h1_trans_mom->SetLineColor(1);
+	h2_trans_mom->SetLineColor(2);
+	h3_trans_mom->SetLineColor(209);
+	h4_trans_mom->SetLineColor(62);
+
+	h1_trans_mom->Draw("hist");
+	h2_trans_mom->Draw("SAME" "hist");
+	h3_trans_mom->Draw("SAME" "hist");
+	h4_trans_mom->Draw("SAME" "hist");
 
 	c->cd(2);
-	h2->Draw();
+	h1_pseudorap->GetXaxis()->SetTitle("Pseudorapiditet");
+	h1_pseudorap->GetYaxis()->SetTitle("Broj pojavljivanja");
+	
+
+
+	h1_pseudorap->SetLineColor(1);
+	h2_pseudorap->SetLineColor(2);
+	h3_pseudorap->SetLineColor(209);
+	h4_pseudorap->SetLineColor(62);
+
+	h1_pseudorap->Draw("hist");
+	h2_pseudorap->Draw("SAME" "hist");
+	h3_pseudorap->Draw("SAME" "hist");
+	h4_pseudorap->Draw("SAME" "hist");
 
 	c->cd(3);
-	h3->Draw();
+	h1_azim_kut->GetXaxis()->SetTitle("Azimutalni kut");
+	h1_azim_kut->GetYaxis()->SetTitle("Broj pojavljivanja");
+	
+
+
+	h1_azim_kut->SetLineColor(1);
+	h2_azim_kut->SetLineColor(2);
+	h3_azim_kut->SetLineColor(209);
+	h4_azim_kut->SetLineColor(62);
+
+	h1_azim_kut->Draw("hist");
+	h2_azim_kut->Draw("SAME" "hist");
+	h3_azim_kut->Draw("SAME" "hist");
+	h4_azim_kut->Draw("SAME" "hist");
 
 	c->cd(4);
-	h4->Draw();
+	h1_bdt->GetXaxis()->SetTitle("BDT");
+	h1_bdt->GetYaxis()->SetTitle("Broj pojavljivanja");
+	
+
+
+	h1_bdt->SetLineColor(1);
+	h2_bdt->SetLineColor(2);
+	h3_bdt->SetLineColor(209);
+	h4_bdt->SetLineColor(62);
+
+	h1_bdt->Draw("hist");
+	h2_bdt->Draw("SAME" "hist");
+	h3_bdt->Draw("SAME" "hist");
+	h4_bdt->Draw("SAME" "hist");
+
+	c->cd(1);
+TLegend *legend1 = new TLegend(0.5,0.8,0.7,0.9);
+
+legend1->AddEntry(h1_trans_mom,"Lep_1","l");
+legend1->AddEntry(h2_trans_mom,"Lep_2","l");
+legend1->AddEntry(h3_trans_mom,"Lep_3","l");
+legend1->AddEntry(h4_trans_mom,"Lep_4","l");
+legend1->Draw();
+
+c->cd(2);
+TLegend *legend2 = new TLegend(0.1,0.8,0.3,0.9);
+
+legend2->AddEntry(h1_pseudorap,"Lep_1","l");
+legend2->AddEntry(h2_pseudorap,"Lep_2","l");
+legend2->AddEntry(h3_pseudorap,"Lep_3","l");
+legend2->AddEntry(h4_pseudorap,"Lep_4","l");
+legend2->Draw();
+
+c->cd(3);
+TLegend *legend3 = new TLegend(0.1,0.8,0.2,0.9);
+
+legend3->AddEntry(h1_azim_kut,"Lep_1","l");
+legend3->AddEntry(h2_azim_kut,"Lep_2","l");
+legend3->AddEntry(h3_azim_kut,"Lep_3","l");
+legend3->AddEntry(h4_azim_kut,"Lep_4","l");
+legend3->Draw();
+
+c->cd(4);
+TLegend *legend4 = new TLegend(0.1,0.8,0.3,0.9);
+
+legend4->AddEntry(h1_bdt,"Lep_1","l");
+legend4->AddEntry(h2_bdt,"Lep_2","l");
+legend4->AddEntry(h3_bdt,"Lep_3","l");
+legend4->AddEntry(h4_bdt,"Lep_4","l");
+legend4->Draw();
+
+
 
 c->SaveAs("histo.pdf");
 c->SaveAs("histo.png");
@@ -97,7 +217,7 @@ c->SaveAs("histo.root");
 
 c1->cd();
 
-h5->Draw("hist");
+h5_higgs->Draw("hist");
 c1->SaveAs("Higgs_histo.png");
 
 	
