@@ -4,6 +4,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TF1.h>
+#include <TLine.h>
 
 void Analyzer::Fit()
 {
@@ -22,7 +23,7 @@ c1->cd(1);
    gr->Draw("AP");
 
    TF1 *likelihood = new TF1("fit_likelihood","x/[0]",0,6);
-   likelihood->SetParameter(0,1.0);
+   likelihood->SetParameter(0,0.1);
    gStyle->SetOptFit();
    gr->Fit(likelihood);
   
@@ -49,18 +50,51 @@ chi_s->SetParameter(14,ey[4]);
 
 cout<<1.0/chi_s->GetMinimumX()<<endl;
 
-  
+double tau_hat,sigma_m,sigma_p,tau_hat1,sigma_m1,sigma_p1;
+tau_hat=1.0/chi_s->GetMinimumX();
+sigma_m=tau_hat-1.0/(chi_s->GetX(chi_s->GetMinimum()+1.0,1.0,tau_hat-0.01));
+sigma_p=1.0/(chi_s->GetX(chi_s->GetMinimum()+1.0,tau_hat,10.0))-tau_hat;
+
+//cout<<"dsads"<<tau_hat<<endl;
+cout<<sigma_m<<endl;
+cout<<sigma_p<<endl;
+
+tau_hat1=chi_s->GetMinimumX();
+sigma_m1=tau_hat1-chi_s->GetX(chi_s->GetMinimum()+1.0,1.0,tau_hat1-0.01);
+sigma_p1=chi_s->GetX(chi_s->GetMinimum()+1.0,tau_hat1,10.0)-tau_hat1;
+
 
 c1->cd(2);
 
 chi_s->Draw();
+c1->Update();
+TLine *l1 = new TLine(1./tau_hat,1.95,1./tau_hat,chi_s->GetMinimum());
+TLine *l2 = new TLine(tau_hat1-sigma_m1,1.95,tau_hat1-sigma_m1,chi_s->GetMinimum()+1.0);
+TLine *l3 = new TLine(tau_hat1-sigma_p1,1.95,tau_hat1-sigma_p1,chi_s->GetMinimum()+1.0);
+l1->Draw("same");
+l2->Draw("same");
+l3->Draw("same");
 
  c1->SaveAs("opca_1.png");
 
-   /*double theta;
+   double theta,br=0.0,naz=0.0, greska=0.0, pod_kor=0.0,pod_kv=0.0;
    
-	
-	
+	for(int i = 0; i<5;i++)
+	{
+		br=br+(2.0*x[i]*y[i])/(ey[i]*ey[i]);
+		naz=naz+(2.0*x[i]*x[i])/(ey[i]*ey[i]);
+	}
+
 	theta = br/naz;
-	cout<<1/theta<<endl;*/
+
+	for(int i = 0; i<5;i++)
+	{
+		pod_kor=pod_kor+((y[i]-theta*x[i])*(y[i]-theta*x[i]))/(ey[i]*ey[i]);
+		pod_kv=pod_kv+(2.0*theta*x[i]*x[i]-2.0*x[i]*y[i])/(ey[i]*ey[i]);
+	}
+
+	greska=0.5*TMath::Power(pod_kor,-0.5)*naz - 0.25*TMath::Power(pod_kor,-1.5)*TMath::Power(pod_kv,2);
+	
+	
+	cout<<1.0/theta<<" +- "<<1.0/greska<<endl;
 }
