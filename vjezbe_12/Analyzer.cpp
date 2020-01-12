@@ -74,6 +74,6 @@ void Analyzer::Draw()
 	h1_trans_mom_poz->Draw();
 	h1_trans_mom_sig->Draw("same");
 
-c->SaveAs("govno.png");
+c->SaveAs("slika.png");
 	
 }
