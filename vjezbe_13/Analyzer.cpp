@@ -82,11 +82,11 @@ void Analyzer::Theoretical_t_gauss()
 
 void Analyzer::ah_test(double sr, double gr)
 {
-	double p_value;
+	double p_value_null, p_value_alt, z_null, z_alt;
 	TCanvas *c = new TCanvas("c3","c3",500,500);
 	c->cd();
-	TH1F *alternative = new TH1F("gauss","",100,160,170);
-	TH1F *spain = new TH1F("gauss","",100,160,170);
+	TH1F *alternative = new TH1F("gauss","",100,160,180);
+	TH1F *spain = new TH1F("gauss","",100,160,180);
 	TRandom *r = new TRandom3();
 	double suma_s=0,suma_alt=0;
 
@@ -104,12 +104,20 @@ void Analyzer::ah_test(double sr, double gr)
 		suma_s=0;
 		suma_alt=0;}	
 
+	p_value_null=spain->Integral(spain->GetXaxis()->FindBin(t_obs),100)/spain->Integral(); //100 je broj binova
+	z_null = TMath::Sqrt(2)*TMath::ErfcInverse(2*p_value_null);
+	cout<<p_value_null<<"       "<<z_null<<endl;
+	p_value_alt=alternative->Integral(alternative->GetXaxis()->FindBin(t_obs),100)/alternative->Integral(); //100 je broj binova
+	z_alt = TMath::Sqrt(2)*TMath::ErfcInverse(2*p_value_alt);
+	cout<<p_value_alt<<"        "<<z_alt<<endl;
+
 	spain->SetLineColor(kRed);
+	spain->SetTitle("Alternativnu hipotezu odbacujemo s CL od 99.7 %");
 	spain->Draw();
 	alternative->Draw("same");
 
-	//p_value=t_statistic->Integral(t_statistic->GetXaxis()->FindBin(t_obs),100)/t_statistic->Integral(); //100 je broj binova
-	//cout<<p_value<<endl;
+	
+
 	TLine *line = new TLine(t_obs,0,t_obs,30000);
 	line->Draw();
 
@@ -117,8 +125,8 @@ void Analyzer::ah_test(double sr, double gr)
 	//legend->SetHeader("Header","C");
 
 	legend->AddEntry(spain,"spanjolska","l");
-	legend->AddEntry(alternative,"francuska","l");
+	legend->AddEntry(alternative,"nizozemska","l");
 	legend->Draw();
 
-	c->SaveAs("t_stat_france.png");
+	c->SaveAs("t_stat_netherlands.png");
 }
